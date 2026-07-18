@@ -65,6 +65,7 @@ button { font-family: inherit; }
   margin: 0;
   color: var(--cream);
   letter-spacing: 0.01em;
+  text-align: left;
 }
 
 .brand-title span {
@@ -74,19 +75,23 @@ button { font-family: inherit; }
 }
 
 .brand-name-row {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 16px;
+  flex-wrap: nowrap;
 }
 
 .brand-logo {
-  width: 194px;
-  height: 194px;
-  border-radius: 25%;
-  object-fit: cover;
-  border: 2px solid var(--gold);
-  flex-shrink: 0;
+  width: 110px !important;
+  height: 110px !important;
+  min-width: 110px !important;
+  min-height: 110px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  border: 3px solid var(--gold) !important;
+  flex-shrink: 0 !important;
+  display: block !important;
 }
 
 /* ===== Category nav ===== */
