@@ -81,9 +81,9 @@ button { font-family: inherit; }
 }
 
 .brand-logo {
-  width: 94px;
-  height: 94px;
-  border-radius: 50%;
+  width: 194px;
+  height: 194px;
+  border-radius: 25%;
   object-fit: cover;
   border: 2px solid var(--gold);
   flex-shrink: 0;
