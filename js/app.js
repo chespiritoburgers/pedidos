@@ -166,6 +166,15 @@ const renderItemCard = (item, { onQtyChange, qtyFor }) => {
   node.querySelector(".item-badge").textContent = item.badge ?? "";
   node.querySelector(".item-price").textContent = currency.format(item.price);
 
+  const img = node.querySelector(".item-img");
+  if (item.image) {
+    img.src = item.image;
+    img.alt = item.name;
+    img.addEventListener("error", () => { img.dataset.broken = "true"; }, { once: true });
+  } else {
+    img.dataset.broken = "true";
+  }
+
   const qtyValue = node.querySelector(".qty-value");
   const syncQty = () => {
     const qty = qtyFor(item.id);
