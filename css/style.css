@@ -565,3 +565,59 @@ button { font-family: inherit; }
 @media (min-width: 560px) {
   .item-grid { grid-template-columns: 1fr 1fr; }
 }
+
+/* ===== Banner de instalación iOS ===== */
+#ios-install-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px calc(14px + env(safe-area-inset-bottom));
+  background: var(--charcoal);
+  border-top: 2px solid var(--red);
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.5);
+  animation: slide-up 0.3s ease;
+}
+
+@keyframes slide-up {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+.ios-banner-text {
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+.ios-banner-text strong {
+  color: var(--gold);
+}
+
+.ios-banner-close {
+  flex: 0 0 auto;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--ink-dim);
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  line-height: 1;
+}
+.ios-banner-close:hover { border-color: var(--red); color: var(--cream); }
+
+/* Cuando la app está instalada (standalone), ocultar el cart-fab un poco más arriba */
+@media (display-mode: standalone) {
+  .cart-fab {
+    bottom: calc(18px + env(safe-area-inset-bottom));
+  }
+}
