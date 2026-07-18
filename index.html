@@ -130,6 +130,37 @@
           .catch((err) => console.warn("[SW] Error al registrar:", err));
       });
     }
+
+    // Aviso de instalación para iOS/Safari
+    (function () {
+      const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
+      const isInStandaloneMode = window.matchMedia("(display-mode: standalone)").matches
+        || window.navigator.standalone === true;
+      const dismissed = sessionStorage.getItem("ios-install-dismissed");
+
+      if (!isIos || isInStandaloneMode || dismissed) return;
+
+      const banner = document.createElement("div");
+      banner.id = "ios-install-banner";
+      banner.setAttribute("role", "status");
+      banner.innerHTML = `
+        <span class="ios-banner-text">
+          📲 Para instalar la app: toca
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 50 50" fill="currentColor" aria-label="botón compartir" style="vertical-align:middle;margin:0 2px">
+            <path d="M30.3 8.7l-4-4.3a1.8 1.8 0 0 0-2.6 0l-4 4.3a1.5 1.5 0 0 0 2.2 2.1l1.3-1.4V32a1.8 1.8 0 0 0 3.6 0V9.4l1.3 1.4a1.5 1.5 0 0 0 2.2-2.1z"/>
+            <path d="M38 19H33v3.6h3.4v21H13.6v-21H17V19h-5a1.8 1.8 0 0 0-1.8 1.8v24.4A1.8 1.8 0 0 0 12 47h26a1.8 1.8 0 0 0 1.8-1.8V20.8A1.8 1.8 0 0 0 38 19z"/>
+          </svg>
+          y luego <strong>"Añadir a pantalla de inicio"</strong>
+        </span>
+        <button class="ios-banner-close" aria-label="Cerrar aviso">✕</button>
+      `;
+      document.body.appendChild(banner);
+
+      banner.querySelector(".ios-banner-close").addEventListener("click", () => {
+        banner.remove();
+        sessionStorage.setItem("ios-install-dismissed", "1");
+      });
+    })();
   </script>
 </body>
 </html>
