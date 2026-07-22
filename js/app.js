@@ -3,6 +3,8 @@
 // Todo vive en el navegador. Nada se guarda en ningún servidor.
 // ============================================================
 
+import { buildOrderReceipt, printViaRawBT, isAndroid } from "./receipt.js";
+
 const MENU_URL = "./data/menu.json";
 const CART_STORAGE_KEY = "chespirito:cart";
 
@@ -112,6 +114,8 @@ const els = {
 
   fab: document.getElementById("cart-fab"),
   fabCount: document.getElementById("cart-fab-count"),
+  headerCartBtn: document.getElementById("header-cart-btn"),
+  headerCartCount: document.getElementById("header-cart-count"),
 
   overlay: document.getElementById("cart-overlay"),
   drawer: document.getElementById("cart-drawer"),
@@ -121,6 +125,8 @@ const els = {
   cartEmpty: document.getElementById("cart-empty"),
   cartTotal: document.getElementById("cart-total-value"),
   clearBtn: document.getElementById("cart-clear"),
+  printBtn: document.getElementById("cart-print"),
+  printHint: document.getElementById("print-hint"),
   sendBtn: document.getElementById("cart-send"),
 
   nameInput: document.getElementById("customer-name"),
@@ -197,9 +203,12 @@ const renderItemCard = (item, { onQtyChange, qtyFor }) => {
 };
 
 const renderCart = (cart) => {
-  els.fabCount.textContent = String(cart.count);
+  const countStr = String(cart.count);
+  els.fabCount.textContent = countStr;
+  els.headerCartCount.textContent = countStr;
   els.cartTotal.textContent = currency.format(cart.total);
   els.sendBtn.disabled = cart.count === 0;
+  els.printBtn.disabled = cart.count === 0;
   els.cartEmpty.hidden = cart.count > 0;
 
   els.cartItems.innerHTML = cart.lines
@@ -228,6 +237,7 @@ const openCart = () => {
   els.overlay.classList.add("is-open");
   els.drawer.setAttribute("aria-hidden", "false");
   els.fab.setAttribute("aria-expanded", "true");
+  els.headerCartBtn.setAttribute("aria-expanded", "true");
 };
 
 const closeCart = () => {
@@ -235,6 +245,7 @@ const closeCart = () => {
   els.overlay.classList.remove("is-open");
   els.drawer.setAttribute("aria-hidden", "true");
   els.fab.setAttribute("aria-expanded", "false");
+  els.headerCartBtn.setAttribute("aria-expanded", "false");
 };
 
 const init = async () => {
@@ -270,7 +281,13 @@ const init = async () => {
   renderCategoryNav(categories);
   refresh();
 
+  if (isAndroid()) {
+    els.printBtn.hidden = false;
+    els.printHint.hidden = false;
+  }
+
   els.fab.addEventListener("click", openCart);
+  els.headerCartBtn.addEventListener("click", openCart);
   els.closeBtn.addEventListener("click", closeCart);
   els.overlay.addEventListener("click", closeCart);
   document.addEventListener("keydown", (event) => {
@@ -290,6 +307,19 @@ const init = async () => {
     if (!confirmed) return;
     cart.clear();
     refresh();
+  });
+
+  els.printBtn.addEventListener("click", () => {
+    if (cart.count === 0) return;
+
+    const base64Ticket = buildOrderReceipt({
+      cart,
+      restaurantName: restaurant.name,
+      customerName: els.nameInput.value.trim(),
+      customerNote: els.noteInput.value.trim(),
+    });
+
+    printViaRawBT(base64Ticket);
   });
 
   els.sendBtn.addEventListener("click", () => {

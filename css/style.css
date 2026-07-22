@@ -40,20 +40,30 @@ button { font-family: inherit; }
 
 /* ===== Header ===== */
 .site-header {
-  padding: 28px 20px 18px;
+  position: relative;
+  padding: 20px 20px 16px;
   text-align: center;
   border-bottom: 3px solid var(--red);
   background: linear-gradient(180deg, rgba(224,32,42,0.14), transparent 70%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.brand-eyebrow {
-  display: inline-block;
-  font-size: 0.72rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--gold);
-  font-weight: 700;
-  margin-bottom: 6px;
+.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-logo {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--gold);
+  display: block;
 }
 
 .brand-title {
@@ -65,13 +75,47 @@ button { font-family: inherit; }
   margin: 0;
   color: var(--cream);
   letter-spacing: 0.01em;
-  text-align: left;
 }
 
 .brand-title span {
   display: block;
   color: var(--red);
   -webkit-text-stroke: 1.5px var(--cream);
+}
+
+/* Botón carrito en el header */
+.header-cart-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--panel);
+  border: 1.5px solid var(--red);
+  border-radius: 999px;
+  color: var(--cream);
+  cursor: pointer;
+  padding: 8px 10px;
+  gap: 0;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  position: absolute;
+  right: 16px;
+}
+.header-cart-btn:hover { background: var(--red); border-color: var(--red); }
+
+.header-cart-count {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: var(--gold);
+  color: var(--black);
+  min-width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  padding: 0 3px;
+  pointer-events: none;
 }
 
 .brand-name-row {
@@ -169,10 +213,14 @@ button { font-family: inherit; }
 
 /* ===== Item card ===== */
 .item-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 14px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    "thumb head"
+    "thumb footer"
+    "desc  desc";
+  column-gap: 14px;
+  row-gap: 6px;
   background: var(--panel);
   border: 1px solid var(--line);
   border-left: 4px solid var(--red);
@@ -186,7 +234,7 @@ button { font-family: inherit; }
 
 /* Miniatura de producto */
 .item-thumb {
-  flex: 0 0 auto;
+  grid-area: thumb;
   width: 76px;
   height: 76px;
   border-radius: 10px;
@@ -217,18 +265,22 @@ button { font-family: inherit; }
   display: none;
 }
 
-.item-card-main { flex: 1; min-width: 0; }
+.item-card-main { display: contents; }
 
 .item-card-head {
+  grid-area: head;
+  align-self: start;
   display: flex;
   align-items: baseline;
   gap: 8px;
   flex-wrap: wrap;
+  min-width: 0;
 }
 
 .item-name {
   margin: 0;
-  font-size: 1.02rem;
+  font-size: 1.15rem;
+  line-height: 1.25;
   font-weight: 700;
   color: var(--red);
 }
@@ -246,21 +298,24 @@ button { font-family: inherit; }
 .item-badge:empty { display: none; }
 
 .item-desc {
+  grid-area: desc;
   margin: 4px 0 0;
-  font-size: 0.82rem;
-  line-height: 1.35;
+  font-size: 0.95rem;
+  line-height: 1.45;
   color: var(--ink-dim);
 }
 
 .item-card-footer {
-  flex: 0 0 auto;
+  grid-area: footer;
+  align-self: start;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: flex-start;
   gap: 8px;
 }
 
 .item-price {
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--cream);
   font-variant-numeric: tabular-nums;
@@ -704,13 +759,13 @@ button { font-family: inherit; }
 }
 
 .cart-actions {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 10px;
   margin-top: 14px;
 }
 
 .btn {
-  flex: 1;
   border: none;
   border-radius: 999px;
   padding: 13px 16px;
@@ -719,6 +774,7 @@ button { font-family: inherit; }
   font-size: 0.9rem;
 }
 .btn-primary {
+  grid-column: 1 / -1;
   background: #25d366;
   color: #06210f;
 }
@@ -732,10 +788,28 @@ button { font-family: inherit; }
   background: transparent;
   border: 1px solid rgba(13,13,13,0.25);
   color: var(--black);
-  flex: 0 0 auto;
-  padding-inline: 18px;
 }
 .btn-ghost:hover { background: rgba(13,13,13,0.06); }
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1.5px solid var(--red);
+  color: var(--red-dark);
+}
+.btn-outline:hover { background: rgba(224,32,42,0.08); }
+
+.print-hint {
+  font-size: 0.68rem;
+  color: #8a8471;
+  margin: 8px 0 0;
+  text-align: center;
+  line-height: 1.4;
+}
 
 /* ===== Accessibility ===== */
 :focus-visible {

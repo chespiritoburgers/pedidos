@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Chespirito Burger's · Pedidos</title>
   <meta name="description" content="Arma tu pedido y lo enviamos directo por WhatsApp." />
-
-  <!-- PWA -->
+  
+    <!-- PWA -->
   <link rel="manifest" href="./manifest.json" />
   <meta name="theme-color" content="#e0202a" />
   <meta name="mobile-web-app-capable" content="yes" />
@@ -14,8 +14,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Chespirito" />
   <link rel="apple-touch-icon" href="./assets/images/logo.png" />
-
-  <!-- Fonts -->
+  
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -24,11 +23,17 @@
 <body>
 
   <header class="site-header">
-    <div class="brand">      
-      <div class="brand-name-row">
-        <img src="./assets/images/logo.png" alt="Logo Chespirito Burger's" class="brand-logo" />       
-      </div>
+    <div class="brand">
+      <img src="./assets/images/logo.png" alt="Chespirito Burger's" class="header-logo" />
+      <h1 class="brand-title">Chespirito<span>Burger's</span></h1>
     </div>
+    <button class="header-cart-btn" id="header-cart-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="cart-drawer" aria-label="Ver carrito de compras">
+      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+      </svg>
+      <span class="header-cart-count" id="header-cart-count">0</span>
+    </button>
   </header>
 
   <nav class="cat-nav" id="cat-nav" aria-label="Categorías del menú">
@@ -156,6 +161,11 @@
           Enviar pedido por WhatsApp
         </button>
       </div>
+
+      <p class="print-hint" id="print-hint" hidden>
+        Imprime con la app gratuita <strong>RawBT</strong> (Play Store) y tu
+        impresora térmica ya emparejada por Bluetooth en Ajustes del celular.
+      </p>
     </div>
   </aside>
 
@@ -184,47 +194,5 @@
   </template>
 
   <script type="module" src="./js/app.js"></script>
-
-  <!-- Registro del Service Worker (PWA) -->
-  <script>
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("./sw.js")
-          .then((reg) => console.log("[SW] Registrado:", reg.scope))
-          .catch((err) => console.warn("[SW] Error al registrar:", err));
-      });
-    }
-
-    // Aviso de instalación para iOS/Safari
-    (function () {
-      const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
-      const isInStandaloneMode = window.matchMedia("(display-mode: standalone)").matches
-        || window.navigator.standalone === true;
-      const dismissed = sessionStorage.getItem("ios-install-dismissed");
-
-      if (!isIos || isInStandaloneMode || dismissed) return;
-
-      const banner = document.createElement("div");
-      banner.id = "ios-install-banner";
-      banner.setAttribute("role", "status");
-      banner.innerHTML = `
-        <span class="ios-banner-text">
-          📲 Para instalar la app: toca
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 50 50" fill="currentColor" aria-label="botón compartir" style="vertical-align:middle;margin:0 2px">
-            <path d="M30.3 8.7l-4-4.3a1.8 1.8 0 0 0-2.6 0l-4 4.3a1.5 1.5 0 0 0 2.2 2.1l1.3-1.4V32a1.8 1.8 0 0 0 3.6 0V9.4l1.3 1.4a1.5 1.5 0 0 0 2.2-2.1z"/>
-            <path d="M38 19H33v3.6h3.4v21H13.6v-21H17V19h-5a1.8 1.8 0 0 0-1.8 1.8v24.4A1.8 1.8 0 0 0 12 47h26a1.8 1.8 0 0 0 1.8-1.8V20.8A1.8 1.8 0 0 0 38 19z"/>
-          </svg>
-          y luego <strong>"Añadir a pantalla de inicio"</strong>
-        </span>
-        <button class="ios-banner-close" aria-label="Cerrar aviso">✕</button>
-      `;
-      document.body.appendChild(banner);
-
-      banner.querySelector(".ios-banner-close").addEventListener("click", () => {
-        banner.remove();
-        sessionStorage.setItem("ios-install-dismissed", "1");
-      });
-    })();
-  </script>
 </body>
 </html>
