@@ -126,18 +126,33 @@ class Cart {
 /** Arma el texto del pedido y el link de WhatsApp. */
 const buildWhatsAppMessage = ({ cart, customerName, customerNote, restaurantName }) => {
   const header = `*Pedido — ${restaurantName}*`;
-  const nameLine = customerName ? `👤 Nombre: ${customerName}` : null;
-  const noteLine = customerNote ? `📍 Nota: ${customerNote}` : null;
+  const nameLine = customerName ? `👤 ${customerName}` : null;
+  const noteLine = customerNote ? `📍 ${customerNote}` : null;
 
-  const itemLines = cart.lines.map(({ item, size, qty, unitPrice }) => {
-    const subtotal = currency.format(unitPrice * qty);
+  // Preparar columnas: "cantidad x producto" (izq) y subtotal (der).
+  const leftCols = cart.lines.map(({ item, size, qty }) => {
     const label = size ? `${item.name} (${size.label})` : item.name;
-    return `• ${qty} x ${label} — ${subtotal}`;
+    return `${qty} x ${label}`;
   });
+
+  const rightCols = cart.lines.map(({ unitPrice, qty }) => currency.format(unitPrice * qty));
+
+  const maxLeft = leftCols.reduce((m, s) => Math.max(m, s.length), 0);
+
+  const itemLines = leftCols.map((left, i) => {
+    const right = rightCols[i];
+    const padding = " ".repeat(Math.max(2, maxLeft - left.length + 2));
+    return `${left}${padding}${right}`;
+  });
+
+  // Envolver en un bloque monoespaciado para que WhatsApp preserve el espaciado
+  // (triple backtick). Esto permite al lector ver claramente las columnas.
+  const fence = "```";
+  const codeBlock = [fence, ...itemLines, fence].join("\n");
 
   const totalLine = `*Total: ${currency.format(cart.total)}*`;
 
-  return [header, nameLine, noteLine, "", ...itemLines, "", totalLine]
+  return [header, nameLine, noteLine, "", codeBlock, "", totalLine]
     .filter((line) => line !== null)
     .join("\n");
 };
