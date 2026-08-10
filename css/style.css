@@ -11,6 +11,7 @@
   --ink: #16241c;        /* texto principal */
   --ink-dim: #56655a;    /* texto secundario */
   --line: #e7e2bf;       /* bordes sutiles */
+  --app-font-size: 26px; /* tamaño base del texto de la app */
 
   --font-display: "Anton", "Arial Narrow", sans-serif;
   --font-body: "Work Sans", system-ui, sans-serif;
@@ -21,7 +22,10 @@
 
 * { box-sizing: border-box; }
 
-html { color-scheme: light; }
+html {
+  color-scheme: light;
+  font-size: var(--app-font-size);
+}
 
 body {
   margin: 0;
