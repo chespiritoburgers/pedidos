@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Chespirito Burger's · Pedidos</title>
+  <title>Pedidos</title>
   <meta name="description" content="Arma tu pedido y lo enviamos directo por WhatsApp." />
   
     <!-- PWA -->
@@ -25,7 +25,7 @@
   <header class="site-header">
     <div class="brand">
       <img src="./assets/images/logo.png" alt="Chespirito Burger's" class="header-logo" />
-      <h1 class="brand-title">Chespirito<span>Burger's</span></h1>
+      <h1 class="brand-title">Chespirito<span>Burgers</span></h1>
     </div>
     <button class="header-cart-btn" id="header-cart-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="cart-drawer" aria-label="Ver carrito de compras">
       <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -50,7 +50,7 @@
       <!-- Marca -->
       <div class="footer-brand">
         <img src="./assets/images/logo.png" alt="Logo Chespirito Burger's" class="footer-logo" />
-        <p class="footer-tagline">Las mejores hamburguesas de la ciudad</p>
+        <p class="footer-tagline">Las mejores pizzas de la ciudad</p>
       </div>
 
       <!-- Divisor -->
@@ -102,7 +102,7 @@
 
       <!-- Pie de página -->
       <div class="footer-bottom">
-        <p>&copy; <span id="footer-year"></span> Chespirito Burger's · Todos los derechos reservados</p>
+        <p>&copy; <span id="footer-year"></span> Chespirito Burguers · Todos los derechos reservados</p>
       </div>
 
     </div>
@@ -183,11 +183,14 @@
         <p class="item-desc"></p>
       </div>
       <div class="item-card-footer">
-        <span class="item-price"></span>
-        <div class="qty-control">
-          <button type="button" class="qty-btn qty-minus" aria-label="Quitar uno">−</button>
-          <span class="qty-value">0</span>
-          <button type="button" class="qty-btn qty-plus" aria-label="Agregar uno">+</button>
+        <div class="size-pills" role="radiogroup" aria-label="Tamaño" hidden></div>
+        <div class="footer-row">
+          <span class="item-price"></span>
+          <div class="qty-control">
+            <button type="button" class="qty-btn qty-minus" aria-label="Quitar uno">−</button>
+            <span class="qty-value">0</span>
+            <button type="button" class="qty-btn qty-plus" aria-label="Agregar uno">+</button>
+          </div>
         </div>
       </div>
     </article>
